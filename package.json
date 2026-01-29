@@ -1,0 +1,9 @@
+{
+  "name": "leaky-bucket-problem",
+  "version": "1.0.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node tests/leaky_bucket.test.js"
+  }
+}
