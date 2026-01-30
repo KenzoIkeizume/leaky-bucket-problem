@@ -12,8 +12,6 @@ function test(name, C, R, events, expected) {
   );
 }
 
-// Difficulty: Easy
-
 // No events should return empty output
 test('easy-no-events', 10, 2, [], []);
 
@@ -37,8 +35,6 @@ test('easy-leak-to-zero', 10, 2, [
   [0, 4],
   [5, 3]
 ], [4, 3]);
-
-// Difficulty: Medium
 
 // Zero leak rate
 // t=0: add 4 -> 4
@@ -74,8 +70,6 @@ test('medium-same-time-events', 10, 2, [
   [0, 4],
   [0, 2]
 ], [3, 7, 9]);
-
-// Difficulty: Hard
 
 // Overflow should stop processing remaining events
 test('hard-stop-on-overflow', 10, 1, [

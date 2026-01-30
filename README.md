@@ -92,6 +92,12 @@ At `time=1`: leak `1` -> level `5`, add `6` exceeds capacity (`5 + 6 > 10`), out
 Implement the simulation exactly as described in the rules. The reference solution is in `leaky_bucket.js` and exposes a `solve(Capacity, LeakRate, events)` function that returns an array.
 
 ## Run Tests
+JavaScript:
 ```
 npm test
+```
+
+Python:
+```
+python -m unittest discover -s tests
 ```
