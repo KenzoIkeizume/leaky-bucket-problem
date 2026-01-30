@@ -7,19 +7,17 @@ const fs = require('fs');
 /**
  * Leaky Bucket
  *
- * Capacity C, leak rate R, and a list of (time, amount) events.
- * The bucket leaks continuously at rate R when not empty.
- * For each event:
- * 1) Leak based on time delta.
- * 2) If adding exceeds capacity, output -1 and stop.
- * 3) Otherwise add and output the level.
+ * You get capacity, leak rate, and events. Each event is [time, amount].
+ * For each event: leak for the time since the previous event, then try to add
+ * amount. If level + amount > capacity, output -1 and stop. Otherwise output
+ * the new level.
  *
- * @param {number} C
- * @param {number} R
- * @param {Array<[number, number]>} events
+ * @param {number} capacity
+ * @param {number} leakRate
+ * @param {Array<[number, number]>} events - [time, amount]
  * @returns {number[]}
  */
-function solve(C, R, events) {
+function solve(capacity, leakRate, events) {
   return []
 }
 
@@ -31,8 +29,8 @@ if (require.main === module) {
   if (!nums || nums.length < 2) process.exit(0);
 
   let idx = 0;
-  const C = Number(nums[idx++]);
-  const R = Number(nums[idx++]);
+  const capacity = Number(nums[idx++]);
+  const leakRate = Number(nums[idx++]);
   const events = [];
 
   while (idx + 1 < nums.length) {
@@ -41,7 +39,7 @@ if (require.main === module) {
     events.push([t, a]);
   }
 
-  const result = solve(C, R, events);
+  const result = solve(capacity, leakRate, events);
   process.stdout.write(JSON.stringify(result));
 }
 

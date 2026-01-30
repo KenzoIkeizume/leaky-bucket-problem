@@ -1,31 +1,32 @@
 # Leaky Bucket
 
 ## Problem
-You are given a leaky bucket that models traffic shaping. The bucket has a fixed capacity and leaks at a constant rate. A sequence of input events adds water/packets at specific times. If an addition would exceed capacity, the bucket **leaks/overflows**, and you must output `-1` and stop.
+You have a bucket with capacity `Capacity`. It leaks at rate `LeakRate` units per second. Each event `(Time, Amount)` happens at time `Time` and tries to add `Amount`.
 
-For each event, output the bucket level immediately after processing that event.
+For each event: first leak for the time since the previous event, then try to add `Amount`. If `level + Amount > Capacity`, output `-1` and stop.
 
 ## Rules
-- The bucket leaks continuously at rate `R` units per second when not empty.
-- Events are given in **non-decreasing time order**.
+- The bucket leaks continuously at rate `LeakRate` units per second when not empty.
+- Events are in **non-decreasing time order**.
 
 ## Input Format
 ```
-C R
-t1 a1
-t2 a2
+Capacity LeakRate
+time1 amount1
+time2 amount2
 ...
-tN aN
+timeN amountN
 ```
-- `C` = capacity (`C > 0`)
-- `R` = leak rate per second (`R > 0`)
-- `ti` = event time (integer, non-decreasing)
-- `ai` = amount added (integer, `ai > 0`)
+- `Capacity` = bucket capacity (`Capacity > 0`)
+- `LeakRate` = leak rate per second (`LeakRate > 0`)
+- `time` = event time (integer, non-decreasing)
+- `amount` = amount added (integer, `amount > 0`)
 
 ## Output Format
 Return an array of numbers:
-- One entry per processed event.
-- If an overflow happens (capacity), append `-1` and stop.
+- One entry per processed event, in order.
+- Each entry is the bucket level right after that event (leak first, then add).
+- If an overflow happens (`level + amount > Capacity`), append `-1` and stop.
 
 ## Examples
 
@@ -45,8 +46,9 @@ Return an array of numbers:
 ```
 
 **Explanation**
-At `t=0`, the bucket is empty, add `7` -> level `7`.
-At `t=1`, leak `2` (rate `2` for `1s`) -> level `5`, add `6` would exceed capacity (`5 + 6 > 10`), so output `-1` and stop.
+
+At `time=0`: leak `0` -> level `0`, add `7` -> level `7` (output `7`).  
+At `time=1`: leak `2` -> level `5`, add `6` exceeds capacity (`5 + 6 > 10`), output `-1` and stop.
 
 ### Example 2 (no overflow)
 **Input**
@@ -63,9 +65,10 @@ At `t=1`, leak `2` (rate `2` for `1s`) -> level `5`, add `6` would exceed capaci
 ```
 
 **Explanation**
-At `t=0`, add `5` -> level `5`.
-At `t=2`, leak `6` -> level `0`, add `5` -> level `5`.
-At `t=3`, leak `3` -> level `2`, add `1` -> level `3`.
+
+At `time=0`: leak `0` -> level `0`, add `5` -> level `5` (output `5`).  
+At `time=2`: leak `6` -> level `0`, add `5` -> level `5` (output `5`).  
+At `time=3`: leak `3` -> level `2`, add `1` -> level `3` (output `3`).
 
 ### Example 3 (burst overflow)
 **Input**
@@ -81,11 +84,12 @@ At `t=3`, leak `3` -> level `2`, add `1` -> level `3`.
 ```
 
 **Explanation**
-At `t=0`, add `6` -> level `6`.
-At `t=1`, leak `1` -> level `5`, adding `6` exceeds capacity (`5 + 6 > 10`), so output `-1` and stop.
+
+At `time=0`: leak `0` -> level `0`, add `6` -> level `6` (output `6`).  
+At `time=1`: leak `1` -> level `5`, add `6` exceeds capacity (`5 + 6 > 10`), output `-1` and stop.
 
 ## Solution
-Implement the simulation exactly as described in the rules. The reference solution is in `leaky_bucket.js` and exposes a `solve(C, R, events)` function that returns an array.
+Implement the simulation exactly as described in the rules. The reference solution is in `leaky_bucket.js` and exposes a `solve(Capacity, LeakRate, events)` function that returns an array.
 
 ## Run Tests
 ```
